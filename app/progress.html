@@ -1,0 +1,132 @@
+<html lang="en">
+<!-- 进度条页面来自 https://github.com/zhu6688/circleProgress -->
+
+<head>
+    <meta charset="UTF-8">
+    <title>进度条</title>
+    <script>
+        window.$ = window.jQuery = require('./scripts/jquery.min.js');
+    </script>
+    <style>
+        .circle {
+            width: 234px;
+            height: 234px;
+            position: absolute;
+            border-radius: 50%;
+            background: #ccbb91;
+        }
+        
+        .pie_left,
+        .pie_right {
+            width: 234px;
+            height: 234px;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        
+        .left,
+        .right {
+            width: 234px;
+            height: 234px;
+            background: #f5eedb;
+            border-radius: 50%;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        
+        .pie_right,
+        .right {
+            clip: rect(0, auto, auto, 117px);
+        }
+        
+        .pie_left,
+        .left {
+            clip: rect(0, 117px, auto, 0);
+        }
+        
+        .mask {
+            width: 168px;
+            height: 168px;
+            border-radius: 50%;
+            left: 33px;
+            top: 33px;
+            background: #FFF;
+            position: absolute;
+            text-align: center;
+            line-height: 168px;
+            font-size: 42px;
+            font-weight: bold;
+            color: #000;
+        }
+        /* .box {
+            height: 300px;
+        } */
+    </style>
+</head>
+
+
+<body>
+    <div class="box">
+        <div class="circle" style="left:0">
+            <div class="pie_left">
+                <div class="left" style="transform: rotate(0deg);"></div>
+            </div>
+            <div class="pie_right">
+                <div class="right" style="transform: rotate(0deg);"></div>
+            </div>
+            <div class="mask"><span>0</span>%</div>
+        </div>
+    </div>
+    <script>
+        const {
+            ipcRenderer
+        } = require('electron');
+
+        $.fn.getCircle = function(options) {
+            return this.each(function(index, el) {
+                var defaults = {
+                    number: 20
+                };
+                var option = $.extend({}, defaults, options);
+                var $span = $(this).find('span');
+                var n = Number(option.number);
+                var num = n * 3.6;
+                if (n < 0) {
+                    $span.text(n)
+                    $(this).find('.left').css('transform', "rotate(0deg)");
+                    $(this).find('.right').css('transform', "rotate(0deg)");
+                    return
+                }
+                if (n > 100) {
+                    $span.text(n);
+                    $(this).find('.left').css('transform', "rotate(180deg)");
+                    $(this).find('.right').css('transform', "rotate(180deg)");
+                    return false
+                } else {
+                    $span.text(n);
+                    if (num <= 180) {
+                        $(this).find('.left').css('transform', "rotate(0deg)");
+                        $(this).find('.right').css('transform', "rotate(" + num + "deg)");
+                    } else {
+                        $(this).find('.left').css('transform', "rotate(" + (num - 180) + "deg)");
+                        $(this).find('.right').css('transform', "rotate(180deg)");
+                    }
+                }
+            })
+        }
+        $(function() {
+            // 监听更新信息
+            ipcRenderer.on('downloadProgress', (e, arg) => {
+                $('.circle').getCircle({
+                    number: parseInt(arg)
+                })
+            })
+        });
+    </script>
+
+
+</body>
+
+</html>
