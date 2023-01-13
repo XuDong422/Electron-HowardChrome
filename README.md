@@ -11,7 +11,7 @@ electron开发的Chrome，2020.04.19，半成品
 ### 2023-01-13
 ### HowardChrome项目内容符合我当前的项目,所以稍做一些优化
 ### 1.electron版本更新至19版本
-### 2.增加electron更新功能
+### 2.增加electron更新功能(将打包的exe与latest.yml上传至publish的url链接)
 ### 3.增加右击菜单与新窗口打开功能
 
 ```shell
