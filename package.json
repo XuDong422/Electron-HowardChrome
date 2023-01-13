@@ -1,6 +1,6 @@
 {
   "name": "HowardBrowser",
-  "version": "0.20.0403",
+  "version": "0.0.1",
   "description": "Howard Browser",
   "main": "app.js",
   "author": {
@@ -10,7 +10,7 @@
     "productName": "HowardBrowser",
     "appId": "top.howardyun.browser",
     "directories": {
-      "output": "build"
+      "output": "builder"
     },
     "nsis": {
       "oneClick": false,
@@ -78,17 +78,20 @@
       ],
       "target": [
         {
-          "target": "nsis",
-          "arch": [
-            "x64",
-            "ia32"
-          ]
+          "target": "nsis"
         }
       ]
-    }
+    },
+    "publish": [
+      {
+        "provider": "generic",
+        "url": "http://xx.xxx.top/xxx"
+      }
+    ]
   },
   "scripts": {
     "start": "electron .",
+    "electron:build": "electron-builder --win --x64",
     "build": "concurrently \"yarn build-main\" \"yarn build-renderer\"",
     "build-dll": "cross-env NODE_ENV=development webpack --config ./configs/webpack.config.renderer.dev.dll.babel.js --colors",
     "build-e2e": "cross-env E2E_BUILD=true yarn build",
@@ -108,14 +111,14 @@
     "package-win": "yarn build && electron-builder build --win --x64",
     "": "electron-packager ./app HelloWorld --all --out ./OutApp --version 1.4.0 --overwrite --icon=./app/img/icon/icon.ico"
   },
-  "devDependencies": {
-    "electron": "^8.2.0",
-    "node-localstorage": "^2.1.5"
-  },
   "dependencies": {
-    "electron-pdf-window": "^1.0.12",
-    "node-localstorage": "^2.1.5",
-    "node-uuid": "^1.4.8",
-    "regedit": "^3.0.3"
+    "electron-updater": "^5.3.0",
+    "node-localstorage": "^2.2.0",
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "electron": "^19.0.9",
+    "electron-builder": "^23.6.0",
+    "node-localstorage": "^2.2.0"
   }
 }

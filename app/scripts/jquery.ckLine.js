@@ -3,9 +3,9 @@
  * @copyright Jonas Nickel
  * @license GPL-3.0 (http://github.com/captainKeller/ckLine/blob/master/LICENSE)
  */
-(function ($) {
+(function($) {
     'use strict';
-    $.fn.ckLine = function (options) {
+    $.fn.ckLine = function(options) {
         var viewportwidth = this.width(),
             viewportHeight = this.height(),
             $el = this.attr('id'),
@@ -24,11 +24,12 @@
                 easing: 'swing',
                 animationTimeRange: null
             }, options);
-        $.fn.ckLine.destroy = function () {
+        $.fn.ckLine.destroy = function() {
             if (interval) {
                 clearInterval(interval);
             }
         };
+
         function creatLine(width, height) {
             var startItemsWidth = new Array(0, width),
                 ramdomItemWidth = startItemsWidth[Math.floor(Math.random() * startItemsWidth.length)],
@@ -64,7 +65,7 @@
             }
             //var line = document.createElementNS(svgns, 'line');
             var line = document.createElementNS(svgns, 'path');
-            line.setAttributeNS(null, 'd','M '+ x1+','+y1+' L '+x2+','+y2);
+            line.setAttributeNS(null, 'd', 'M ' + x1 + ',' + y1 + ' L ' + x2 + ',' + y2);
             line.setAttributeNS(null, 'stroke-width', settings.strokeWidth);
             line.setAttributeNS(null, 'stroke', settings.strokeColor);
             line.setAttributeNS(null, 'class', "line off")
@@ -77,29 +78,30 @@
             line.setAttributeNS(null, 'stroke-dasharray', length);
             line.setAttributeNS(null, 'stroke-dashoffset', length);
         }
+
         function animate() {
             var time = settings.animationTime;
             if (settings.animationTimeRange) {
                 time = Math.floor(Math.random() * (settings.animationTimeRange[1] - settings.animationTimeRange[0] + 1) + settings.animationTimeRange[0])
-                //console.log(time);
+                    //// console.log(time);
             }
-            jQuery('.line.off').each(function () {
+            jQuery('.line.off').each(function() {
                 jQuery(this).addClass('on').removeClass('off');
                 jQuery(this).animate({
                     'stroke-dashoffset': 0
                 }, time, settings.easing);
                 var $this = jQuery(this);
-                setTimeout(function () {
-                    $this.fadeOut(settings.fadeOutTime, function () {
+                setTimeout(function() {
+                    $this.fadeOut(settings.fadeOutTime, function() {
                         jQuery(this).remove();
                     });
                 }, settings.lifeTime)
             });
         }
-        
-        
-        
-        interval = setInterval(function () {
+
+
+
+        interval = setInterval(function() {
             creatLine(settings.width, settings.height);
             animate();
         }, settings.interval);
